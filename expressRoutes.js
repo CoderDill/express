@@ -15,13 +15,32 @@ app.get("/cats", (req, res) => {
   res.send("Meow Meow");
 });
 
-app.get("/chickens", (req, res) => {
-  res.send("BOCK BOCK")
-})
+app.get("/chickens/:chicken", (req, res) => {
+  res.send("BOCK BOCK");
+});
 
 app.post("/chickens", function createChicken(req, res) {
   res.send("You created a chicken, not.");
 });
+
+const greetings = {
+  en: "hello",
+  fr: "bonjour",
+  ic: "hallo",
+  ja: "konnichiwa",
+};
+
+app.get("/greet/:language", (req, res) => {
+  const lang = req.params.language;
+  const greeting = greetings[lang];
+  if (!greeting) return res.send("Invalid Language")
+  res.send(greeting);
+});
+
+app.get("/search", (req, res) => {
+  const { term = "pigs", sort = "top" } = req.query;
+  return res.send(`Seach Page! Term is: ${term}, sort is: ${sort}`)
+})
 
 app.listen(4000, () => {
   console.log("App on port 4000");
