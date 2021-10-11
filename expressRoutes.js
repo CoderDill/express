@@ -33,14 +33,23 @@ const greetings = {
 app.get("/greet/:language", (req, res) => {
   const lang = req.params.language;
   const greeting = greetings[lang];
-  if (!greeting) return res.send("Invalid Language")
+  if (!greeting) return res.send("Invalid Language");
   res.send(greeting);
 });
 
 app.get("/search", (req, res) => {
   const { term = "pigs", sort = "top" } = req.query;
-  return res.send(`Seach Page! Term is: ${term}, sort is: ${sort}`)
-})
+  return res.send(`Seach Page! Term is: ${term}, sort is: ${sort}`);
+});
+
+app.get("/show-me-headers", (req, res) => {
+  res.send(req.headers);
+});
+
+app.get("/show-language", (req, res) => {
+  const lang = req.headers["accept-language"];
+  res.send(`Your language prefrence is ${lang}`);
+});
 
 app.listen(4000, () => {
   console.log("App on port 4000");
