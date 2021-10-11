@@ -2,6 +2,9 @@ const express = require("express");
 
 const app = express();
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.get("/", (req, res) => {
   res.send("HOMEPAGE");
 });
@@ -49,6 +52,10 @@ app.get("/show-me-headers", (req, res) => {
 app.get("/show-language", (req, res) => {
   const lang = req.headers["accept-language"];
   res.send(`Your language prefrence is ${lang}`);
+});
+
+app.post("/register", (req, res) => {
+  res.send(req.body);
 });
 
 app.listen(4000, () => {
