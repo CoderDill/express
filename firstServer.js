@@ -9,7 +9,7 @@ app.use((req, res, next) => {
 })
 
 app.use((req, res, next) => {
-    console.log("Server got another request!")
+    console.log("This will also run.")
     next();
 }) 
 
