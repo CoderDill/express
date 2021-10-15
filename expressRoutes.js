@@ -1,4 +1,5 @@
 const express = require("express");
+const ExpressError = require("./expressError");
 
 const app = express();
 
@@ -45,11 +46,11 @@ app.get("/search", (req, res) => {
   return res.send(`Seach Page! Term is: ${term}, sort is: ${sort}`);
 });
 
-app.get("/show-me-headers", (req, res) => {
+app.get("/show-me-headers", (req, res, next) => {
   try {
     res.send(req.headers);
   } catch (err) {
-    next(err);
+    return next(new ExpressError("Database Error"));
   }
 });
 
@@ -62,8 +63,18 @@ app.post("/register", (req, res) => {
   res.send(req.body);
 });
 
+app.use((req, res, next) => {
+  const err = new ExpressError("Page Not Found", 404);
+  next(err);
+});
+
 app.use((error, req, res, next) => {
-  res.send(error.status).send(error.message);
+  let status = error.status || 500;
+  let message = error.msg;
+
+  return res.status(status).json({
+    error: { message, status },
+  });
 });
 
 app.listen(4000, () => {
