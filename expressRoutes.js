@@ -46,7 +46,11 @@ app.get("/search", (req, res) => {
 });
 
 app.get("/show-me-headers", (req, res) => {
-  res.send(req.headers);
+  try {
+    res.send(req.headers);
+  } catch (err) {
+    next(err);
+  }
 });
 
 app.get("/show-language", (req, res) => {
@@ -56,6 +60,10 @@ app.get("/show-language", (req, res) => {
 
 app.post("/register", (req, res) => {
   res.send(req.body);
+});
+
+app.use((error, req, res, next) => {
+  res.send(error.status).send(error.message);
 });
 
 app.listen(4000, () => {
